@@ -4,7 +4,7 @@
 // init project
 var express = require('express');
 var app = express();
-console.log("hello")
+
 // enable CORS (https://en.wikipedia.org/wiki/Cross-origin_resource_sharing)
 // so that your API is remotely testable by FCC 
 var cors = require('cors');
@@ -24,7 +24,23 @@ app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
 });
 
+app.get("/api/:date?", function(req,res){
+const dateVal = req.params
+let date =new Date();
+if(dateVal.date !== undefined){
+  date= new Date(parseInt(dateVal.date))
+  if(date == "Invalid Date"){
+    return res.json({
+      error:"Invalid Date"
+    })
+  }
+}
 
+return res.json({
+  unix: date.getTime(),
+  utc:date.toUTCString()
+})
+})
 
 // listen for requests :)
 var listener = app.listen(process.env.PORT, function () {
